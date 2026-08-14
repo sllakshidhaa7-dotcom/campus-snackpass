@@ -4,6 +4,14 @@ let cart = [];
 
 let selectedCategory = "All";
 
+
+// ========================================
+// API CONFIGURATION
+// ========================================
+
+const API_URL = "http://localhost:8081/api";
+
+
 // ========================================
 // LOAD FOOD
 // ========================================
@@ -16,13 +24,18 @@ async function loadFoods() {
 
     try {
 
-        const response = await fetch("/api/foods");
+        const response =
+            await fetch(`${API_URL}/foods`);
 
         if (!response.ok) {
-            throw new Error("Unable to load menu");
+            throw new Error(
+                `Unable to load menu: ${response.status}`
+            );
         }
 
         foods = await response.json();
+
+        console.log("Foods loaded:", foods);
 
         // Make sure price is always a number
         foods = foods.map(food => ({
@@ -34,7 +47,10 @@ async function loadFoods() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Food loading error:",
+            error
+        );
 
         showToast(
             "Unable to load menu",
@@ -231,7 +247,7 @@ function addToCart(id) {
     // Convert price to number
     const price = Number(food.price);
 
-    // Prevent null / invalid price
+    // Prevent invalid price
     if (!Number.isFinite(price)) {
 
         console.error(
@@ -286,7 +302,7 @@ function addToCart(id) {
 
 
 // ========================================
-// INCREASE
+// INCREASE QUANTITY
 // ========================================
 
 function increaseQuantity(id) {
@@ -305,7 +321,7 @@ function increaseQuantity(id) {
 
 
 // ========================================
-// DECREASE
+// DECREASE QUANTITY
 // ========================================
 
 function decreaseQuantity(id) {
@@ -582,7 +598,6 @@ async function confirmOrder() {
 
     };
 
-    // Check what is being sent
     console.log(
         "Sending order:",
         orderData
@@ -592,7 +607,7 @@ async function confirmOrder() {
 
         const response =
             await fetch(
-                "/api/orders",
+                `${API_URL}/orders`,
                 {
 
                     method: "POST",
@@ -631,6 +646,11 @@ async function confirmOrder() {
         const order =
             await response.json();
 
+        console.log(
+            "Order created:",
+            order
+        );
+
         // Show generated token
         document.getElementById(
             "orderToken"
@@ -654,7 +674,10 @@ async function confirmOrder() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Order error:",
+            error
+        );
 
         showToast(
             "Unable to place order",
@@ -697,6 +720,18 @@ function copyToken() {
                 "📋"
             );
 
+        })
+        .catch(error => {
+
+            console.error(
+                "Copy failed:",
+                error
+            );
+
+            showToast(
+                "Unable to copy token",
+                "❌"
+            );
         });
 }
 
