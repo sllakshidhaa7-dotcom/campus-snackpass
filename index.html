@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Campus SnackPass</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="logo-area">
+
+        <div class="logo-icon">
+            🍔
+        </div>
+
+        <div>
+            <h2>Campus SnackPass</h2>
+            <span>Order Smart. Skip the Queue.</span>
+        </div>
+
+    </div>
+
+
+    <div class="nav-actions">
+
+        <button
+                class="theme-btn"
+                id="themeBtn"
+                onclick="toggleTheme()">
+
+            🌙
+
+        </button>
+
+        <div class="cart-badge">
+
+            🛒
+
+            <span id="cartCount">
+                0
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div>
+
+            <span class="hero-tag">
+                ⚡ Fast Campus Ordering
+            </span>
+
+            <h1>
+                Your favorite food,
+                <span>without the queue.</span>
+            </h1>
+
+            <p>
+                Browse the campus menu, add your favorite snacks
+                and collect your order using a unique token.
+            </p>
+
+        </div>
+
+        <div class="hero-emoji">
+            🍔
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SEARCH ================= -->
+
+<section class="toolbar">
+
+    <div class="search-box">
+
+        <span>🔍</span>
+
+        <input
+                type="text"
+                id="searchInput"
+                placeholder="Search burgers, fries, drinks..."
+                oninput="searchFood()">
+
+    </div>
+
+</section>
+
+
+<!-- ================= CATEGORIES ================= -->
+
+<section class="categories">
+
+    <button
+            class="category-btn active"
+            onclick="filterFood('All', this)">
+        🍽️ All
+    </button>
+
+    <button
+            class="category-btn"
+            onclick="filterFood('Burgers', this)">
+        🍔 Burgers
+    </button>
+
+    <button
+            class="category-btn"
+            onclick="filterFood('Snacks', this)">
+        🍟 Snacks
+    </button>
+
+    <button
+            class="category-btn"
+            onclick="filterFood('Fast Food', this)">
+        🍕 Fast Food
+    </button>
+
+    <button
+            class="category-btn"
+            onclick="filterFood('Drinks', this)">
+        🥤 Drinks
+    </button>
+
+</section>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main-container">
+
+
+    <!-- MENU -->
+
+    <section class="menu-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Today's Menu
+                </h2>
+
+                <p>
+                    Freshly prepared campus favorites
+                </p>
+
+            </div>
+
+            <span id="foodCount">
+                0 items
+            </span>
+
+        </div>
+
+
+        <!-- Loading -->
+
+        <div
+                id="loading"
+                class="loading">
+
+            <div class="spinner"></div>
+
+            <p>
+                Loading menu...
+            </p>
+
+        </div>
+
+
+        <!-- Food Cards -->
+
+        <div
+                id="foodContainer"
+                class="food-grid">
+
+        </div>
+
+
+        <!-- Empty Search -->
+
+        <div
+                id="emptyState"
+                class="empty-state hidden">
+
+            <div>
+                🔎
+            </div>
+
+            <h3>
+                No food found
+            </h3>
+
+            <p>
+                Try another food name or category.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ORDER ================= -->
+
+    <aside class="order-box">
+
+        <div class="order-header">
+
+            <div>
+
+                <h2>
+                    🛒 Your Order
+                </h2>
+
+                <span id="orderItemsText">
+                    0 items
+                </span>
+
+            </div>
+
+            <button
+                    class="clear-btn"
+                    onclick="clearCart()">
+
+                Clear
+
+            </button>
+
+        </div>
+
+
+        <div
+                id="orderContainer"
+                class="order-container">
+
+            <div class="cart-empty">
+
+                <div class="empty-cart-icon">
+                    🛒
+                </div>
+
+                <h3>
+                    Your cart is empty
+                </h3>
+
+                <p>
+                    Add something delicious
+                    from the menu.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- BILL -->
+
+        <div class="bill">
+
+            <div>
+
+                <span>
+                    Subtotal
+                </span>
+
+                <span>
+                    ₹<span id="subtotal">0</span>
+                </span>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Convenience Fee
+                </span>
+
+                <span>
+                    ₹0
+                </span>
+
+            </div>
+
+            <div class="total-row">
+
+                <strong>
+                    Total
+                </strong>
+
+                <strong>
+                    ₹<span id="totalPrice">0</span>
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <button
+                class="confirm-btn"
+                onclick="confirmOrder()">
+
+            <span>
+                Confirm Order
+            </span>
+
+            <span>
+                →
+            </span>
+
+        </button>
+
+
+        <p class="secure-text">
+            🔒 Secure campus ordering
+        </p>
+
+    </aside>
+
+</main>
+
+
+<!-- ================= TOAST ================= -->
+
+<div
+        id="toast"
+        class="toast">
+
+    <span id="toastIcon">
+        ✓
+    </span>
+
+    <span id="toastMessage">
+        Added to cart
+    </span>
+
+</div>
+
+
+<!-- ================= ORDER MODAL ================= -->
+
+<div
+        id="tokenModal"
+        class="modal">
+
+    <div class="modal-content">
+
+        <button
+                class="close-modal"
+                onclick="closeModal()">
+
+            ×
+
+        </button>
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <span class="success-label">
+            ORDER CONFIRMED
+        </span>
+
+        <h2>
+            Your food is being prepared! 🎉
+        </h2>
+
+        <p>
+            Show this token at the campus
+            canteen counter to collect your order.
+        </p>
+
+
+        <div class="token-box">
+
+            <small>
+                YOUR PICKUP TOKEN
+            </small>
+
+            <strong id="orderToken">
+                SNACK-XXXXXXXX
+            </strong>
+
+        </div>
+
+
+        <button
+                class="copy-btn"
+                onclick="copyToken()">
+
+            📋 Copy Token
+
+        </button>
+
+
+        <button
+                class="done-btn"
+                onclick="closeModal()">
+
+            Done
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        © 2026 Campus SnackPass
+        • Made for students ❤️
+    </p>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
