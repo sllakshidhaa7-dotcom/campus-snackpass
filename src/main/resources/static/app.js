@@ -9,8 +9,7 @@ let selectedCategory = "All";
 // API CONFIGURATION
 // ========================================
 
-const API_URL = "http://localhost:8081/api";
-
+const API_URL = "https://campus-snackpass-production.up.railway.app/api";
 
 // ========================================
 // LOAD FOOD
